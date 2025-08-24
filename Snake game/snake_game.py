@@ -166,16 +166,16 @@ class SnakeGame:
                     rotated_snake_head = pygame.transform.rotate(snake_head, -90)
                     self.display.blit(rotated_snake_head, (point.x, point.y))
             elif point == self.snake[-1]:
-                if self.direction == Direction.RIGHT:
+                if self.snake[-2].x > point.x: #right
                     self.display.blit(snake_tail, (point.x, point.y))
-                elif self.direction == Direction.LEFT:
+                elif self.snake[-2].x < point.x: # left
                     rotated_snake_tail = pygame.transform.rotate(snake_tail, 180)
                     self.display.blit(rotated_snake_tail, (point.x, point.y))
-                elif self.direction == Direction.UP:
-                    rotated_snake_tail = pygame.transform.rotate(snake_tail, 90)
-                    self.display.blit(rotated_snake_tail, (point.x, point.y))
-                elif self.direction == Direction.DOWN:
+                elif self.snake[-2].y > point.y: # up
                     rotated_snake_tail = pygame.transform.rotate(snake_tail, -90)
+                    self.display.blit(rotated_snake_tail, (point.x, point.y))
+                else: # down
+                    rotated_snake_tail = pygame.transform.rotate(snake_tail, 90)
                     self.display.blit(rotated_snake_tail, (point.x, point.y))
             else:
                 self.display.blit(snake_body, (point.x, point.y))
