@@ -1,3 +1,4 @@
+import math
 import sys
 
 import pygame
@@ -126,7 +127,7 @@ class SnakeGame:
 
         return False
 
-    def _update_ui(self, apple):
+    def _update_ui(self, apple_par):
         self.display.blit(background, (0, 0))
 
         # draw snake
@@ -136,10 +137,8 @@ class SnakeGame:
 
         # alternate scale
         self.frame_count += 1
-        if self.frame_count % 7 == 0:
-            apple_scaled = pygame.transform.scale(apple, (30, 30))
-        else:
-            apple_scaled = pygame.transform.scale(apple, (33, 33))
+        factor = 1 + 0.2 * math.sin(self.frame_count)
+        apple_scaled = pygame.transform.scale(apple_par, (32 * factor, 32 * factor))
 
         # get rect centered on the food position
         apple_rect = apple_scaled.get_rect(center=(self.food.x + BLOCK_SIZE // 2, self.food.y + BLOCK_SIZE // 2))
