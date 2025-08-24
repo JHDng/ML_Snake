@@ -5,6 +5,10 @@ import random
 from enum import Enum
 from collections import namedtuple
 
+# CONSTANTS
+BLOCK_SIZE = 25
+SPEED = 7
+
 # Setup
 Point = namedtuple('Point',  'x, y')
 background = pygame.image.load('Background.png')
@@ -14,11 +18,6 @@ snake_head = pygame.image.load('Head.png')
 snake_body = pygame.image.load('Body.png')
 snake_tail = pygame.image.load('Tail.png')
 
-# CONSTANTS
-BLOCK_SIZE = 25
-SPEED = 7
-
-# First commands
 pygame.init()
 font = pygame.font.Font('ByteBounce.ttf', 40)
 # Slower to load option
@@ -85,10 +84,10 @@ class SnakeGame:
         self.snake.insert(0, self.head)
 
         # 3. check if game over
-        game_over = False
+        check_game_over = False
         if self._is_collision():
-            game_over = True
-            return game_over, self.score
+            check_game_over = True
+            return check_game_over, self.score
 
         # 4. place food or just move
         if self.head == self.food:
@@ -102,7 +101,7 @@ class SnakeGame:
         self.clock.tick(SPEED)
 
         # 6. return if game over and score
-        return game_over, self.score
+        return check_game_over, self.score
 
     def _move(self, direction):
         x = self.head.x
