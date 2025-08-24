@@ -1,33 +1,34 @@
 import math
 import sys
-
 import pygame
 import random
 from enum import Enum
 from collections import namedtuple
+
+# Setup
+Point = namedtuple('Point',  'x, y')
+background = pygame.image.load('Background.png')
+apple = pygame.image.load('Apple.png')
+apple_center = apple.get_rect().center
+snake_head = pygame.image.load('Head.png')
+snake_body = pygame.image.load('Body.png')
+snake_tail = pygame.image.load('Tail.png')
+
+# CONSTANTS
+BLOCK_SIZE = 25
+SPEED = 7
+
+# First commands
+pygame.init()
+font = pygame.font.Font('ByteBounce.ttf', 40)
+# Slower to load option
+# font = pygame.font.SysFont('arial', 25)
 
 class Direction(Enum):
     RIGHT = 1
     LEFT = 2
     UP = 3
     DOWN = 4
-
-
-Point = namedtuple('Point',  'x, y')
-background = pygame.image.load('Background.png')
-apple = pygame.image.load('Apple.png')
-apple_center = apple.get_rect().center
-
-BLOCK_SIZE = 25
-SPEED = 7
-
-pygame.init()
-font = pygame.font.Font('ByteBounce.ttf', 40)
-# Slower to load option
-# font = pygame.font.SysFont('arial', 25)
-
-BLUE1 = (0, 0, 255)
-BLUE2 = (0, 100, 255)
 
 class SnakeGame:
 
@@ -99,6 +100,7 @@ class SnakeGame:
         # 5. update ui and clock
         self._update_ui(apple)
         self.clock.tick(SPEED)
+
         # 6. return if game over and score
         return game_over, self.score
 
@@ -131,13 +133,11 @@ class SnakeGame:
         self.display.blit(background, (0, 0))
 
         # draw snake
-        for point in self.snake:
-            pygame.draw.rect(self.display, BLUE1, pygame.Rect(point.x, point.y, BLOCK_SIZE, BLOCK_SIZE))
-            pygame.draw.rect(self.display, BLUE2, pygame.Rect(point.x + 4, point.y + 4, BLOCK_SIZE / 2, BLOCK_SIZE / 2))
+        self._draw_snake()
 
         # alternate scale
         self.frame_count += 1
-        factor = 1 + 0.2 * math.sin(self.frame_count)
+        factor = 1 + 0.15 * math.sin(self.frame_count)
         apple_scaled = pygame.transform.scale(apple_par, (32 * factor, 32 * factor))
 
         # get rect centered on the food position
@@ -150,9 +150,37 @@ class SnakeGame:
         self.display.blit(text, (0, 0))
         pygame.display.flip()
 
+    def _draw_snake(self):
+        global snake_head
+        for point in self.snake:
+            if point == self.head:
+                if self.direction == Direction.RIGHT:
+                    self.display.blit(snake_head, (point.x, point.y))
+                elif self.direction == Direction.LEFT:
+                    rotated_snake_head = pygame.transform.rotate(snake_head, 180)
+                    self.display.blit(rotated_snake_head, (point.x, point.y))
+                elif self.direction == Direction.UP:
+                    rotated_snake_head = pygame.transform.rotate(snake_head, 90)
+                    self.display.blit(rotated_snake_head, (point.x, point.y))
+                elif self.direction == Direction.DOWN:
+                    rotated_snake_head = pygame.transform.rotate(snake_head, -90)
+                    self.display.blit(rotated_snake_head, (point.x, point.y))
+            elif point == self.snake[-1]:
+                if self.direction == Direction.RIGHT:
+                    self.display.blit(snake_tail, (point.x, point.y))
+                elif self.direction == Direction.LEFT:
+                    rotated_snake_tail = pygame.transform.rotate(snake_tail, 180)
+                    self.display.blit(rotated_snake_tail, (point.x, point.y))
+                elif self.direction == Direction.UP:
+                    rotated_snake_tail = pygame.transform.rotate(snake_tail, 90)
+                    self.display.blit(rotated_snake_tail, (point.x, point.y))
+                elif self.direction == Direction.DOWN:
+                    rotated_snake_tail = pygame.transform.rotate(snake_tail, -90)
+                    self.display.blit(rotated_snake_tail, (point.x, point.y))
+            else:
+                self.display.blit(snake_body, (point.x, point.y))
 
 if __name__ == '__main__':
-
     game = SnakeGame()
 
     # game loop
