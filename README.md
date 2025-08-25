@@ -1,146 +1,63 @@
-# 🐍 Snake AI with Q-Learning & PyTorch  
+# Snake AI with Q-Learning (Python • PyTorch • Pygame)
 
-This repository contains a **Machine Learning project** that teaches an agent to play the classic **Snake Game** using **Q-Learning**, **Deep Q-Networks (DQN)**, and **PyTorch**. The project demonstrates how reinforcement learning can be applied to a simple game environment, and it provides modular implementations of the game logic, agents, and training pipeline.  
+## Overview
 
----
+This project demonstrates how to train an AI agent to master the classic Snake game using the Q-learning algorithm. It follows the tutorial “Python + PyTorch + Pygame Reinforcement Learning – Train an AI to Play Snake” ([youtube.com](https://www.youtube.com/watch?v=L8ypSXwyBds)).
 
-## 📌 Project Overview  
-
-The goal of this project is to train an **AI agent** that can successfully play Snake by learning optimal policies through trial and error.  
-The agent uses **reinforcement learning** to maximize cumulative rewards while avoiding collisions and collecting food.  
-
-**Key aspects:**  
-- ✅ **Custom Snake game environment** built in Python.  
-- ✅ **Q-Learning agent** for tabular reinforcement learning.  
-- ✅ **Deep Q-Learning agent (DQN)** implemented in **PyTorch**.  
-- ✅ Modular design with game logic, agents, and training separated.  
-- ✅ Training visualization and performance tracking (scores, plots).  
+You’ll learn:
+- How to build the Snake game environment using Pygame  
+- Design and logic behind Q-learning (tabular or deep)  
+- Integration of Python, PyTorch, and Pygame  
+- Training the AI to improve gameplay over time
 
 ---
 
-## 🎮 Game Environment  
+## Table of Contents
 
-The Snake game is implemented from scratch using **Python (Pygame/graphics or CLI, depending on your implementation)**.  
-It defines the state space and reward function used by the agents:  
-
-### 🔹 State Representation  
-- Danger (left, right, straight)  
-- Current direction  
-- Food position (relative to snake head)  
-- Snake length  
-
-### 🔹 Actions  
-- `Straight`  
-- `Left turn`  
-- `Right turn`  
-
-### 🔹 Reward Function  
-- `+10` for eating food  
-- `-10` for dying  
-- `0` for each step (or small penalty for survival incentive tweaking)  
+1. [Features](#features)  
+2. [Tech Stack](#tech-stack)  
+3. [Getting Started](#getting-started)  
+   - [Installation](#installation)  
+   - [Usage](#usage)  
+4. [Implementation Details](#implementation-details)  
+   - [Game Environment](#game-environment)  
+   - [Q-Learning Agent](#q-learning-agent)  
+   - [Training Loop](#training-loop)  
+   - [Rewards & Exploration Strategy](#rewards--exploration-strategy)  
+5. [Results & Visuals](#results--visuals)  
+6. [Evaluation & Metrics](#evaluation--metrics)  
+7. [How to Extend](#how-to-extend)  
+8. [License](#license)  
+9. [Acknowledgements](#acknowledgements)
 
 ---
 
-## 🧠 Agents  
+## Features
 
-### 🔹 Q-Learning Agent  
-- Uses a **Q-Table** to store `(state, action)` values.  
-- Learns via **Bellman equation**:
-- Q(s, a) ← Q(s, a) + α [r + γ max(Q(s’, a’)) – Q(s, a)]
-
-- - Works well on smaller state spaces, but suffers from scalability issues.  
-
-### 🔹 Deep Q-Network (DQN) Agent  
-- Uses a **Neural Network** (PyTorch) to approximate Q-values.  
-- **Architecture**:  
-- Input: Encoded state vector.  
-- Hidden layers: Fully connected layers with ReLU activation.  
-- Output: Q-values for each possible action.  
-- **Techniques implemented**:  
-- Experience Replay (Replay Buffer).  
-- ε-greedy policy for exploration vs. exploitation.  
-- Discounted future rewards (γ).  
-- Target network updates (optional, if implemented).  
+- Functional Snake game with movement, growth, collisions  
+- Q-learning agent that learns via game-play rewards  
+- Configurable parameters: learning rate, discount factor, epsilon (exploration)  
+- Real-time visualization with Pygame for training observation
 
 ---
 
-## 📂 Project Structure  
+## Tech Stack
 
-📦 snake-rl
-┣ 📜 README.md
-┣ 📜 requirements.txt
-┣ 📜 train.py # Training loop
-┣ 📜 play.py # Run a trained agent
-┣ 📂 game
-[PLACEHOLDER]
+- **Python 3.10+** – base language  
+- **PyTorch** – builds and updates Q-function (deep or tabular)  
+- **Pygame** – game rendering and mechanics  
+- **Optional**: NumPy, Matplotlib (for plotting metrics)
 
 ---
 
-## 🚀 Getting Started  
+## Getting Started
 
-### 1️⃣ Clone Repository  
+### Installation
 
-git clone https://github.com/your-username/snake-rl.git
-cd snake-rl
-2️⃣ Install Dependencies
+```bash
+git clone https://github.com/yourusername/snake-qlearning.git
+cd snake-qlearning
+python3 -m venv venv
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
 pip install -r requirements.txt
-
-
-Dependencies:
-
-torch – Deep learning framework.
-
-pygame – Snake game environment.
-
-numpy, matplotlib – Data handling & visualization.
-
-3️⃣ Train an Agent
-python train.py --agent dqn --episodes 1000
-
-
-Options:
-
---agent [q|dqn] → Choose Q-Learning or DQN.
-
---episodes N → Number of training episodes.
-
---render → Show game window during training (slows down training).
-
-4️⃣ Play with a Trained Agent
-python play.py --model results/checkpoint.pth
-
-📊 Results
-
-During training, the agent’s performance is tracked with:
-
-Average score per episode.
-
-Moving average of last N episodes.
-
-Exploration rate (ε) over time.
-
-Example training curve:
-
-🛠️ Future Improvements
-
-Implement Double DQN to reduce overestimation bias.
-
-Add Dueling DQN architecture for better stability.
-
-Try Prioritized Experience Replay.
-
-Experiment with different reward functions.
-
-Train on larger board sizes and more complex variations.
-
-📖 References
-
-Sutton & Barto, Reinforcement Learning: An Introduction
-
-DeepMind’s DQN paper (2015): Playing Atari with Deep Reinforcement Learning
-
-PyTorch documentation: https://pytorch.org
-
-🤝 Contributing
-
-Contributions are welcome! Feel free to fork the repository, open issues, or submit pull requests.
