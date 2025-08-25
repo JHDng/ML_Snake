@@ -1,27 +1,27 @@
 import math
 import random
 import sys
+import numpy as np
+import pygame
 from collections import namedtuple
 from enum import Enum
 
-import numpy as np
-import pygame
 
 # CONSTANTS
 BLOCK_SIZE = 25
-SPEED = 7
+SPEED = 50
 
 # Setup
 Point = namedtuple('Point',  'x, y')
-background = pygame.image.load('Background.png')
-apple = pygame.image.load('Apple.png')
+background = pygame.image.load('snake_game_pkg/Background.png')
+apple = pygame.image.load('snake_game_pkg/Apple.png')
 apple_center = apple.get_rect().center
-snake_head = pygame.image.load('Head.png')
-snake_body = pygame.image.load('Body.png')
-snake_tail = pygame.image.load('Tail.png')
+snake_head = pygame.image.load('snake_game_pkg/Head.png')
+snake_body = pygame.image.load('snake_game_pkg/Body.png')
+snake_tail = pygame.image.load('snake_game_pkg/Tail.png')
 
 pygame.init()
-font = pygame.font.Font('ByteBounce.ttf', 40)
+font = pygame.font.Font('snake_game_pkg/ByteBounce.ttf', 40)
 # Slower to load option
 # font = pygame.font.SysFont('arial', 25)
 
