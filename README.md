@@ -1,75 +1,76 @@
 # Snake AI with Deep Q-Learning (Python • PyTorch • Pygame)
 
-A Deep Q-Network (DQN) agent that learns to play Snake from reward alone, with no hand-written strategy.
-Built by following [this tutorial](https://www.youtube.com/watch?v=L8ypSXwyBds), then extended with **TODO: your extension, e.g. an ablation of replay and ε-decay**.
+A learning project in which a Deep Q-Network (DQN) agent learns to play Snake from game-play reward. It follows the tutorial [Python + PyTorch + Pygame Reinforcement Learning – Train an AI to Play Snake](https://www.youtube.com/watch?v=L8ypSXwyBds) and is a reproduction of it, not original research.
 
-![Training curve](results/scores.png)
-<!-- TODO: save the plotter.py output to results/scores.png -->
+## Table of Contents
 
-## Results
+1. [Features](#features)
+2. [Tech Stack](#tech-stack)
+3. [Getting Started](#getting-started)
+4. [Implementation Details](#implementation-details)
+5. [Results](#results)
+6. [Possible Extensions](#possible-extensions)
+7. [Acknowledgements](#acknowledgements)
 
-| Metric | Value |
-|---|---|
-| Episodes trained | TODO |
-| Mean score (last 100 games) | TODO |
-| Record score | TODO |
-| Seeds | TODO (use 5 or more) |
+## Features
 
-<!-- Only add the sentence below if it is true, e.g. "Replay lifts the mean score from X to Y." -->
+- Snake game with movement, growth and collision detection
+- DQN agent with experience replay and ε-greedy exploration
+- Configurable learning rate, discount factor (γ) and exploration rate (ε)
+- Real-time Pygame visualisation of training
+- Training plots (`plotter.py`)
 
-## How it works
+## Tech Stack
 
-**Environment.** Grid-based Snake in Pygame. Each step the agent picks one action: TODO (e.g. 3 relative moves: straight, turn left, turn right).
+- **Python 3.7**
+- **PyTorch**: Q-network and optimisation
+- **Pygame**: game logic and rendering
+- **Matplotlib**: plotting
 
-**State** (TODO: size, e.g. 11 binary features):
-- danger straight / left / right
-- current direction
-- food location relative to the head (left / right / up / down)
+<!-- VERIFY: Python version and the exact dependency list -->
 
-**Reward:** TODO (e.g. +10 for food, −10 for collision, 0 otherwise).
-
-**Agent.**
-- Network: TODO (e.g. MLP 11 → 256 → 3).
-- Learning target, from the Bellman equation:
-  `y = r + γ · max_a' Q(s', a')`, with loss `(y − Q(s, a))²`.
-- Exploration: ε-greedy, with ε decaying over games (TODO: schedule).
-- Experience replay: buffer of TODO transitions, mini-batches of TODO.
-- Hyperparameters: lr = TODO, γ = TODO.
-
-## Run it
+## Getting Started
 
 ```bash
 git clone https://github.com/JHDng/ML_Snake.git
 cd ML_Snake
 python3 -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt # TODO: add this file (torch, pygame, numpy, matplotlib)
-python agent.py                 # trains with live visualisation
+source venv/bin/activate      # macOS/Linux
+venv\Scripts\activate         # Windows
+pip install torch pygame numpy matplotlib
+python agent.py
 ```
 
-## Repository layout
+## Implementation Details
 
-| Path | Purpose |
-|---|---|
-| `agent.py` | Training loop, ε-greedy policy, replay memory |
-| `model.py` | Q-network and optimisation step |
-| `snake_game_pkg/` | Pygame environment |
-| `plotter.py` | Live and saved score plots |
+**Environment.** Grid-based board; the snake moves cell by cell and the episode ends on collision.
+<!-- VERIFY: state representation (which features) and action space (4 absolute directions vs. 3 relative: straight/left/right) -->
 
-## Limitations
+**Agent.** A neural network approximates Q(s, a). Actions are chosen ε-greedily, with ε decreasing over games. Transitions (s, a, r, s′, done) are stored in a replay memory and sampled for training.
 
-- Hand-crafted state, so it does not learn from pixels.
-- TODO: single run vs. multiple seeds; no target network (if true).
-- Final performance depends on the random seed.
+**Training loop.**
+1. Reset the environment.
+2. Select an action (ε-greedy).
+3. Execute it; observe reward r and next state s′.
+4. Store the transition in replay memory.
+5. Train the network on sampled transitions to minimise the squared error between Q(s, a) and the target r + γ · max<sub>a′</sub> Q(s′, a′) (target = r if the episode ended).
+6. Repeat until game over.
 
-## Ideas for future work
+**Rewards.** Positive reward for eating food, negative reward for dying.
+<!-- VERIFY: reward values and any per-step reward -->
 
-- Double DQN, dueling networks, prioritised replay.
-- A CNN on raw frames instead of engineered features.
-- Reward shaping (e.g. distance-to-food) and its effect on stability.
+## Results
 
-## References
+No quantitative evaluation has been done yet. Training scores can be plotted with `plotter.py`.
 
-- Tutorial: [Python + PyTorch + Pygame Reinforcement Learning – Train an AI to Play Snake](https://www.youtube.com/watch?v=L8ypSXwyBds)
-- Mnih et al., *Human-level control through deep reinforcement learning*, Nature, 2015.
-- Sutton & Barto, *Reinforcement Learning: An Introduction*, 2nd ed.
+## Possible Extensions
+
+- Evaluate systematically: multiple random seeds, mean and variance of scores, ablations (with vs. without experience replay, different ε schedules)
+- Double DQN, Dueling networks, Prioritized Experience Replay
+- Convolutional network on raw frames instead of hand-crafted features
+- Reward shaping (e.g. distance to food)
+- Memory-efficient agents, as in *A Memory Efficient Deep Reinforcement Learning Approach For Snake Game Autonomous Agents*
+
+## Acknowledgements
+
+Based on the tutorial [Python + PyTorch + Pygame Reinforcement Learning – Train an AI to Play Snake](https://www.youtube.com/watch?v=L8ypSXwyBds).
